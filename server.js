@@ -68,14 +68,21 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message || 'Something went wrong on the server.' });
 });
 
-// ---------- Start Server ----------
-app.listen(PORT, () => {
-  console.log(`\n  🏠 Sabali is running: http://localhost:${PORT}\n`);
-  console.log('  Database:');
-  console.log(`    ${mongoose.connection.readyState === 1 ? '✅ Connected to MongoDB' : '❌ Not connected'}`);
-  console.log('  Seed accounts:');
-  console.log('    admin    : admin@sabali.africa / admin123');
-  console.log('    agent    : amina@coastalliving.africa / agent123   (verified)');
-  console.log('    agent    : brian@nairobiprime.africa / agent123    (unverified)');
-  console.log('    customer : customer@example.com / customer123\n');
-});
+// ---------- Start Server (Local only) ----------
+// 🔥 For Vercel serverless deployment, we export the app instead of listening.
+// Vercel handles the server startup automatically.
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`\n  🏠 Sabali is running: http://localhost:${PORT}\n`);
+    console.log('  Database:');
+    console.log(`    ${mongoose.connection.readyState === 1 ? '✅ Connected to MongoDB' : '❌ Not connected'}`);
+    console.log('  Seed accounts:');
+    console.log('    admin    : admin@sabali.africa / admin123');
+    console.log('    agent    : amina@coastalliving.africa / agent123   (verified)');
+    console.log('    agent    : brian@nairobiprime.africa / agent123    (unverified)');
+    console.log('    customer : customer@example.com / customer123\n');
+  });
+}
+
+// 🚀 Export for Vercel serverless deployment
+module.exports = app;
