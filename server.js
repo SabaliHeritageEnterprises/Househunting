@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-// Import routes
 const authRoutes = require('./routes/auth');
 const propertyRoutes = require('./routes/properties');
 const bookingRoutes = require('./routes/bookings');
@@ -16,7 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // ---------- MongoDB Connection ----------
-// 🔥 Removed deprecated options – they are now default in Mongoose 7+
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
   console.log('✅ Connected to MongoDB');
@@ -24,8 +22,11 @@ mongoose.connect(process.env.MONGODB_URI)
 })
 .catch(err => {
   console.error('❌ MongoDB connection error:', err.message);
-  console.error('   Please check your MONGODB_URI in .env file');
-  process.exit(1);
+  // Don't exit the process in production – let the app still serve static files
+  // (though DB routes will fail, but at least the function won't crash on startup)
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
 });
 
 // ---------- Middleware ----------
@@ -33,7 +34,6 @@ app.use(cors());
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Uploaded property photos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ---------- API Routes ----------
@@ -55,7 +55,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// ---------- Frontend (SPA) ----------
+// ---------- Frontend ----------
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) return next();
@@ -68,9 +68,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message || 'Something went wrong on the server.' });
 });
 
-// ---------- Start Server (Local only) ----------
-// 🔥 For Vercel serverless deployment, we export the app instead of listening.
-// Vercel handles the server startup automatically.
+// ---------- Start Server (local only) ----------
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`\n  🏠 Sabali is running: http://localhost:${PORT}\n`);
@@ -84,5 +82,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// 🚀 Export for Vercel serverless deployment
+// ---------- Export for Vercel ----------
 module.exports = app;
