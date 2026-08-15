@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sabali — house-hunting &amp; short-let stays, verified</title>
+<meta name="description" content="Sabali connects agents, owners, and guests for verified short-let stays and long-term rentals across East Africa, with 3D previews and anti-scam protections." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- 🔥 Fixed: removed integrity attribute that was causing a block -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="css/styles.css" />
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  window.THREE = THREE;
+  window.OrbitControls = OrbitControls;
+</script>
+
+<!-- WhatsApp Button Styles -->
+<style>
+  .whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.6);
+  }
+  .whatsapp-float .pulse-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid #25D366;
+    animation: pulse 2s ease-out infinite;
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .whatsapp-float svg {
+    width: 34px;
+    height: 34px;
+    fill: white;
+  }
+  @media (max-width: 640px) {
+    .whatsapp-float {
+      width: 52px;
+      height: 52px;
+      bottom: 16px;
+      right: 16px;
+    }
+    .whatsapp-float svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <a href="#/" style="display: inline-block; line-height: 0;">
+        <img 
+          src="https://res.cloudinary.com/tgvfx3bf/image/upload/v1785739679/logo_yangu_eebk8o.jpg" 
+          alt="Sabali logo" 
+          style="height: 40px; width: auto; display: block;"
+        />
+      </a>
+    </div>
+    <nav class="nav-links">
+      <button class="nav-link" data-route="#/">Home</button>
+      <button class="nav-link" data-route="#/properties">Explore stays</button>
+      <button class="nav-link list-property-trigger">List your property</button>
+      <button class="nav-link" data-route="#/house-hunt">House Hunt</button>
+      <button class="nav-link" data-route="#/dashboard">Dashboard</button>
+    </nav>
+    <div class="nav-right">
+      <div id="nav-auth-slot" style="display:flex;gap:8px;align-items:center;"></div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light theme"><i class="fa-solid fa-sun" id="theme-icon"></i></button>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section id="view-home" class="view hidden">
+    <div class="hero">
+      <img 
+        src="https://res.cloudinary.com/tgvfx3bf/image/upload/v1785480615/househunting1_c0i7ge.jpg?w=1600&q=auto&f=auto" 
+        alt="Hero background" 
+        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
+      />
+      <div class="hero-scrim"></div>
+      <div class="hero-daynight">
+        <i class="fa-solid fa-sun"></i>
+        <input type="range" id="hero-daynight-slider" min="0" max="100" value="42" aria-label="Time of day" />
+        <i class="fa-solid fa-moon"></i>
+      </div>
+      <div class="container hero-content">
+        <span class="hero-eyebrow"><i class="fa-solid fa-shield-heart"></i> Verified stays across East Africa</span>
+        <h1>Find a place that actually <em>feels</em> like home.</h1>
+        <p>From clifftop villas above Diani Beach to gated townhouses in Runda — book short-lets and long-term homes from agents Sabali has actually checked out.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="hero-explore-btn"><i class="fa-solid fa-magnifying-glass"></i> Explore stays</button>
+          <button class="btn btn-secondary list-property-trigger"><i class="fa-solid fa-house-circle-check"></i> List your property</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num mono">8</div><div class="label">Curated stays live</div></div>
+          <div class="hero-stat"><div class="num mono">2</div><div class="label">Countries covered</div></div>
+          <div class="hero-stat"><div class="num mono">24h</div><div class="label">Report review time</div></div>
+        </div>
+      </div>
+    </div>
+
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <span class="section-eyebrow">Trust &amp; safety</span>
+          <h2>Built so scams don't get a foothold</h2>
+        </div>
+        <p class="section-sub">Sabali is a two-sided marketplace, so we put real weight behind the trust signals — not just a badge for show.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <i class="fa-solid fa-user-shield"></i>
+          <h3>Agent verification</h3>
+          <p>Every agent is either verified or clearly marked "pending" — right on the listing, not buried in a profile.</p>
+        </div>
+        <div class="trust-card">
+          <i class="fa-solid fa-calendar-check"></i>
+          <h3>Confirmed, not assumed</h3>
+          <p>A booking is only final once the host confirms it. Pending requests can be cancelled with no cost.</p>
+        </div>
+        <div class="trust-card">
+          <i class="fa-solid fa-flag"></i>
+          <h3>Community reporting</h3>
+          <p>Anyone can flag a suspicious listing. Three reports auto-flags it for admin review.</p>
+        </div>
+        <div class="trust-card">
+          <i class="fa-solid fa-cube"></i>
+          <h3>See before you commit</h3>
+          <p>A 3D preview and an interactive map mean fewer surprises than a handful of flattering photos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head">
+        <div>
+          <span class="section-eyebrow">Featured</span>
+          <h2>Handpicked stays</h2>
+        </div>
+        <button class="btn btn-secondary" data-route="#/properties">Explore all stays</button>
+      </div>
+      <div class="prop-grid" id="featured-grid"></div>
+    </section>
+  </section>
+
+  <!-- ================= PROPERTIES ================= -->
+  <section id="view-properties" class="view hidden">
+    <div class="container page">
+      <div class="section-head">
+        <div>
+          <span class="section-eyebrow">Explore</span>
+          <h2>Every stay on Sabali</h2>
+        </div>
+        <div id="properties-count" class="field-hint"></div>
+      </div>
+
+      <div class="filter-bar" id="filter-bar">
+        <div class="chip-row">
+          <button class="chip active" data-category="">All</button>
+          <button class="chip" data-category="villa">Villa</button>
+          <button class="chip" data-category="beach_apartment">Beach apartment</button>
+          <button class="chip" data-category="holiday_home">Holiday home</button>
+          <button class="chip" data-category="guesthouse">Guesthouse</button>
+          <button class="chip" data-category="condo">Condo</button>
+          <button class="chip" data-category="townhouse">Townhouse</button>
+        </div>
+        <div class="spacer"></div>
+        <select id="filter-type">
+          <option value="">Any duration</option>
+          <option value="short_let">Short-let</option>
+          <option value="long_term">Long-term</option>
+        </select>
+        <input type="number" id="filter-min-price" placeholder="Min price" min="0" style="width:110px;" />
+        <input type="number" id="filter-max-price" placeholder="Max price" min="0" style="width:110px;" />
+        <input type="number" id="filter-guests" placeholder="Guests" min="1" style="width:90px;" />
+        <input type="text" id="filter-search" placeholder="Search title or city…" />
+      </div>
+
+      <div class="prop-grid" id="properties-grid"></div>
+
+      <!-- ========== REPLACED STATIC IMAGE WITH GOOGLE MAPS EMBED ========== -->
+      <div style="margin-top:56px;">
+        <div class="section-head">
+          <div>
+            <span class="section-eyebrow">📍 Map</span>
+            <h2>See it on the map</h2>
+          </div>
+        </div>
+        <div style="border-radius:12px; overflow:hidden; height:400px; background:#1a2a3a;">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4076472.334860416!2d34.0!3d-1.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182c5a18d9a8a7c7%3A0x8b7a0e5a1e5e5e5e!2sKenya!5e0!3m2!1sen!2s!4v1234567890" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+        <div class="field-hint" style="margin-top:10px;">
+          <i class="fa-solid fa-location-dot"></i> All properties displayed on the map
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HOUSE HUNT ================= -->
+  <section id="view-househunt" class="view hidden">
+    <div class="container page"></div>
+  </section>
+
+  <!-- ================= PROPERTY DETAIL ================= -->
+  <section id="view-property" class="view hidden">
+    <div class="container page"></div>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="view-dashboard" class="view hidden">
+    <div class="container page"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div><strong style="color:var(--text);">Sabali</strong> — house-hunting and short-let stays, verified.</div>
+    <div>Built with Three.js · Node &amp; Express · in-memory demo data</div>
+  </div>
+</footer>
+
+<div id="toast-stack"></div>
+
+<!-- 🟢 WhatsApp Floating Button -->
+<a 
+  href="https://wa.me/254703717467?text=Hi%20Sabali%2C%20I%20have%20a%20question%20about%20your%20properties." 
+  class="whatsapp-float" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  aria-label="Chat with us on WhatsApp"
+>
+  <span class="pulse-ring"></span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/three-hero.js"></script>
+<script src="js/three-card.js"></script>
+<script src="js/three-tour.js"></script>
+<script src="js/three-map.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/properties.js"></script>
+<script src="js/booking.js"></script>
+<script src="js/houseHunt.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
