@@ -25,12 +25,31 @@
   justify-content: center;
   box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: ai-launcher-breathe 3.5s ease-in-out infinite;
 }
 .ai-launcher:hover {
   transform: scale(1.08);
   box-shadow: var(--shadow-pop);
 }
-.ai-launcher i { font-size: 22px; }
+
+/* Icon — works with both <i> (Font Awesome) and inline <svg> */
+.ai-launcher i,
+.ai-launcher svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ai-launcher:hover i,
+.ai-launcher:hover svg {
+  transform: rotate(15deg) scale(1.08);
+}
+
+/* Gentle breathing pulse — draws the eye without being noisy */
+@keyframes ai-launcher-breathe {
+  0%, 100% { box-shadow: var(--shadow-card); }
+  50%      { box-shadow: var(--shadow-pop), 0 0 0 6px rgba(219, 162, 90, 0.14); }
+}
 
 .ai-launcher .badge {
   position: absolute;

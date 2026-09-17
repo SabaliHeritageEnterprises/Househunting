@@ -36,6 +36,16 @@
     },
   ];
 
+  /* Sparkle SVG — replaces the broken <i class="fa-solid fa-sparkles"> */
+  const SPARKLE_SVG = `
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 2 L13.6 9.4 L21 11 L13.6 12.6 L12 20 L10.4 12.6 L3 11 L10.4 9.4 Z"
+            fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"/>
+      <circle cx="18.5" cy="5.5" r="1.4" fill="currentColor"/>
+      <circle cx="5.5" cy="18.5" r="1" fill="currentColor" opacity="0.7"/>
+    </svg>
+  `;
+
   /* ---------- DOM injection ---------- */
   function inject() {
     if (document.getElementById("ai-launcher")) return;
@@ -44,8 +54,7 @@
     launcher.id = "ai-launcher";
     launcher.className = "ai-launcher";
     launcher.setAttribute("aria-label", "Ask Sabali AI");
-    launcher.innerHTML = `<i class="fa-solid fa-sparkles"></i>
-      <span class="badge">AI</span>`;
+    launcher.innerHTML = `${SPARKLE_SVG}<span class="badge">AI</span>`;
     launcher.addEventListener("click", toggleDrawer);
 
     const backdrop = document.createElement("div");
