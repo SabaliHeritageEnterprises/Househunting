@@ -137,6 +137,10 @@ function getCustomHoverImage(property) {
   if (title.includes('two bedroom standalone') && property.category === 'villa') {
     return 'https://res.cloudinary.com/tgvfx3bf/image/upload/v1785737808/WhatsApp_Image_2026-07-16_at_22.54.25_ngt04w.jpg';
   }
+  // 🆕 Elemeintaita (Handpicked stay)
+  if (title.includes('elemeintaita')) {
+    return 'https://res.cloudinary.com/tgvfx3bf/image/upload/v1789646255/elemeintaita_ozzceq.jpg';
+  }
   return null;
 }
 
@@ -336,6 +340,7 @@ const Properties = {
   },
 
   // 🖼️ Override images and details for custom properties in the Handpicked stays section
+  // 🔥 Elemeintaita is guaranteed to appear first
   async loadHomeFeatured() {
     const grid = qs('#featured-grid');
     if (!grid) return;
@@ -343,8 +348,10 @@ const Properties = {
     try {
       const { properties } = await Api.listProperties({});
 
-      // Apply transformations to the first 4 properties
-      const featuredProperties = properties.slice(0, 4).map((p) => transformPropertyForDisplay(p));
+      // Put Elemeintaita first, then fill with other properties
+      const eleme = properties.find((p) => p.title.toLowerCase().includes('elemeintaita'));
+      const others = properties.filter((p) => !p.title.toLowerCase().includes('elemeintaita')).slice(0, 3);
+      const featuredProperties = [eleme, ...others].filter(Boolean).map((p) => transformPropertyForDisplay(p));
 
       this.renderGrid(grid, featuredProperties);
     } catch (err) {

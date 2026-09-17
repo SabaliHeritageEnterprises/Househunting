@@ -278,6 +278,28 @@ seedProperty({
   images: ['https://res.cloudinary.com/tgvfx3bf/image/upload/v1785737810/WhatsApp_Image_2026-07-16_at_22.56.29_lobriw.jpg'],
 });
 
+// 🆕 Elemeintaita – new luxury villa in Diani (Handpicked stay)
+seedProperty({
+  agentId: agentAmina.id,
+  title: 'Elemeintaita',
+  description: 'A stunning luxury villa in Diani with breathtaking ocean views, modern amenities, and a private pool. Perfect for a relaxing getaway with family or friends.',
+  category: 'villa',
+  type: 'short_let',
+  price: 28000, // adjust as needed
+  location: {
+    city: 'Diani',
+    area: 'Diani Beach',
+    country: 'Kenya',
+    lat: -4.3167,
+    lng: 39.5833
+  },
+  bedrooms: 3,
+  bathrooms: 3,
+  maxGuests: 6,
+  amenities: ['wifi', 'pool', 'parking', 'ocean_view', 'kitchen', 'air_conditioning', 'security'],
+  images: ['https://res.cloudinary.com/tgvfx3bf/image/upload/v1789646255/elemeintaita_ozzceq.jpg'],
+});
+
 // --- House-hunt verification requests --------------------------------
 // A separate concept from bookings: a customer pays a Sabali agent to
 // physically go verify a property (either one already listed on Sabali,
